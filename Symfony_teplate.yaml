@@ -1,0 +1,27 @@
+id: Symfony-phpinfo-database
+info:
+    name: Symfony configuration file
+    author: Adrian Tirado Garcia
+    severity: critical
+    description: Symfony in it we can see the phpinfo and database configuration.
+    reference: https://symfony.com/legacy/doc/reference/1_3/en/07-Databases
+    classification:
+        cvss-metrics: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N
+        cvss-score: 9.5
+        cwe-id: CWE-200
+    tags: config,exposure,symfony,credential,information
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/app_dev.php/_profiler/open?file=app/config/parameters.yml"
+      - "{{BaseURL}}/app_dev.php/_profiler/phpinfo"
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 200
+      - type: word
+        part: body
+        words:
+          - "parameters"
+          - "profiler"
